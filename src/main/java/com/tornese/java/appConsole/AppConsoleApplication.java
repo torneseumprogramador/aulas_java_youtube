@@ -16,7 +16,14 @@ public class AppConsoleApplication {
 			Faça um programa que peça a quantidade de caixas para o joão e de o total a receber
 
 			Perguntar se o pagamento é a vista, caso seja a vista e valor for maior que R$ 100 reais dar um desconto de 10%
-			Caso o pagamento seja parcelado acrescentar 15% sobre o valor total
+			temos promoção levou 10 ganhou 10%, ou seja se for 10 caixas dar 10% de desconto
+
+			Caso o pagamento seja parcelado acrescentar 15% sobre o valor total segundo a tebela
+			2x = 5%
+			3x = 8%
+			4x = 10%
+			5x = 13%
+			maior que 5x = 15%
 
 			Obs: aceitar parcelas no máximo até 12 meses, e mostrar o valor de cada parcela já com acrescimo 
 
@@ -36,6 +43,7 @@ public class AppConsoleApplication {
 		System.out.println("[" + quantidadeCaixas + "]");
 
 		double valorLaranja = 0.50;
+		int quantidadeCaixasPromocao = 3;
 		int quantidadeDeLaranjaPorCaixa = 50;
 		int porcentagemLucro = 40;
 		int porcentagemDesconto = 10;
@@ -52,7 +60,7 @@ public class AppConsoleApplication {
 		boolean aVista = tipoPagamento.toUpperCase().equals("A");
 		if(aVista){
 			System.out.println("Você selecionou o pagamento a vista");
-			if(valorTotal > valorParaDesconto){
+			if(valorTotal > valorParaDesconto || quantidadeCaixas == quantidadeCaixasPromocao){
 				valorTotalAlterado -= (valorTotal * porcentagemDesconto / 100);
 			}
 		}
@@ -63,7 +71,32 @@ public class AppConsoleApplication {
 				parcelas = maximoParcelas;
 			}
 
-			valorTotalAlterado += (valorTotal * porcentagemAcrescimo / 100);
+			if(parcelas == 1){
+				System.out.println("Você selecionou o pagamento a vista");
+				if(valorTotal > valorParaDesconto || quantidadeCaixas == quantidadeCaixasPromocao){
+					valorTotalAlterado -= (valorTotal * porcentagemDesconto / 100);
+				}
+			}
+			else if(parcelas > 5) 
+				valorTotalAlterado += (valorTotal * porcentagemAcrescimo / 100);
+			else{
+				switch(parcelas) {
+					case 2:
+						porcentagemAcrescimo = 5;
+						break;
+					case 3:
+						porcentagemAcrescimo = 8;
+						break;
+					case 4:
+						porcentagemAcrescimo = 10;
+						break;
+					case 5:
+						porcentagemAcrescimo = 13;
+						break;
+				}
+				valorTotalAlterado += (valorTotal * porcentagemAcrescimo / 100);
+			}
+
 		}
 
 		double lucroAReceber = (valorTotalAlterado * porcentagemLucro / 100);
