@@ -4,10 +4,60 @@ package com.tornese.java.appConsole;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.*;
 
+// import java.util.ArrayList;
+// import java.util.Arrays;
+// import java.util.List;
+
 @SpringBootApplication
 public class AppConsoleApplication {
 
 	public static void main(String[] args) {
+
+		// int[] array = new int[3];
+		// array[0] = 1;
+		// array[1] = 1;
+		// array[2] = 1;
+
+		// int[] valores = {1,3,4,9,8};
+
+		// int[][] array2 = new int[3][2];
+		// array2[0][0] = 1;
+		// array2[0][1] = 2;
+
+		// array2[1][0] = 1;
+		// array2[1][1] = 2;
+
+		// array2[2][0] = 1;
+		// array2[2][1] = 2;
+
+		// for(int valor : valores){
+		// 	System.out.println(valor);
+		// }
+
+
+		// List<String> nomes = new ArrayList<String>();
+		// nomes.add("Danilo");
+		// nomes.add("Lana");
+
+		// for(String nome : nomes){
+		// 	System.out.println(nome);
+		// }
+
+		// List<List<String>> nomes2 = new ArrayList<List<String>>();
+		// List<String> dados = new ArrayList<String>();
+		// dados.add("Danilo");
+		// dados.add("3");
+
+		// nomes2.add(dados);
+		
+		// for(List<String> nome : nomes2){
+		// 	System.out.println(nome.get(0));
+		// 	System.out.println(nome.get(1));
+		// }
+
+		// List<Integer> itens = Arrays.asList( 1, 2, 3, 5 );
+    // itens.forEach(item->System.out.println(item));
+		
 		/*
 		 * João é um comerciante que vende laranjas Ele precisa fazer uma entrega de
 		 * algumas caixas cada laranja ele vende por 0,50 centavos, cada caixa tem 50
@@ -30,6 +80,9 @@ public class AppConsoleApplication {
 		 * O lucro do comerciante será de 45% em suas vendas
 		 * 
 		 * Dar um relatório final sobre a operação acima
+		 * 
+		 * armazene o nome e o valor do cliente para que o final da operação você possa mostrar
+		 * o nome e a quantidade de caixas
 		 * 
 		 */
 
