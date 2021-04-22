@@ -3,10 +3,9 @@ package com.tornese.java.appConsole;
 // import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-// import java.util.ArrayList;
-// import java.util.Arrays;
-// import java.util.List;
 
 @SpringBootApplication
 public class AppConsoleApplication {
@@ -15,10 +14,14 @@ public class AppConsoleApplication {
 
 		// int[] array = new int[3];
 		// array[0] = 1;
-		// array[1] = 1;
-		// array[2] = 1;
+		// array[1] = 55;
+		// array[2] = 63;
 
 		// int[] valores = {1,3,4,9,8};
+
+		// for(int valor : valores){
+		// 	System.out.println(valor);
+		// }
 
 		// int[][] array2 = new int[3][2];
 		// array2[0][0] = 1;
@@ -47,8 +50,12 @@ public class AppConsoleApplication {
 		// List<String> dados = new ArrayList<String>();
 		// dados.add("Danilo");
 		// dados.add("3");
-
 		// nomes2.add(dados);
+
+		// List<String> dados2 = new ArrayList<String>();
+		// dados2.add("Denilson");
+		// dados2.add("6");
+		// nomes2.add(dados2);
 		
 		// for(List<String> nome : nomes2){
 		// 	System.out.println(nome.get(0));
@@ -86,6 +93,10 @@ public class AppConsoleApplication {
 		 * 
 		 */
 
+		List<String> clientes = new ArrayList<String>();
+		List<Integer> pedidosDosClientesEmQuantidade = new ArrayList<Integer>();
+		List<Double> valoresASerPagoPeloCliente = new ArrayList<Double>();
+
 		while (true) {
 			Console cnsl = System.console();
 			System.out.println("===========================================");
@@ -94,8 +105,11 @@ public class AppConsoleApplication {
 			int sair = Integer.parseInt(cnsl.readLine("Digite: \n1 para continuar \n0 para sair\n"));
 			if(sair == 0) break;
 
-			int quantidadeCaixas = Integer
-					.parseInt(cnsl.readLine("Digite a quantidade de caixas que você pretende vender?\n"));
+			String nome = cnsl.readLine("Digite o nome do cliente que quer comprar as caixas:\n");
+			int quantidadeCaixas = Integer.parseInt(cnsl.readLine("Digite a quantidade de caixas que o " + nome + " deseja?\n"));
+
+			clientes.add(nome);
+			pedidosDosClientesEmQuantidade.add(quantidadeCaixas);
 
 			System.out.println("[" + quantidadeCaixas + "]");
 
@@ -157,6 +171,8 @@ public class AppConsoleApplication {
 
 			double lucroAReceber = (valorTotalAlterado * porcentagemLucro / 100);
 
+			valoresASerPagoPeloCliente.add(valorTotalAlterado);
+
 			System.out.println("===========================================");
 			System.out.println("Muito bem seu João parabéns pela venda");
 			System.out.println("O seu lucro é de: R$ " + lucroAReceber);
@@ -170,6 +186,14 @@ public class AppConsoleApplication {
 						.println("Para o pagamento a parcelado colocamos um acrescimo dê: R$ " + (valorTotalAlterado - valorTotal));
 				System.out.println("O valor da parcela será de: R$ " + (valorTotalAlterado / parcelas));
 			}
+			System.out.println("===========================================");
+		}
+
+		for(int i=0; i<clientes.size(); i++){
+			System.out.println("===========================================");
+			System.out.println("Cliente: " + clientes.get(i));
+			System.out.println("Quantidade de caixas: " + pedidosDosClientesEmQuantidade.get(i));
+			System.out.println("Valor total a pagar: " + valoresASerPagoPeloCliente.get(i));
 			System.out.println("===========================================");
 		}
 
