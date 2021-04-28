@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.tornese.java.appConsole.entidades.Cliente;
 
 @SpringBootApplication
 public class AppConsoleApplication {
@@ -93,9 +93,7 @@ public class AppConsoleApplication {
 		 * 
 		 */
 
-		List<String> clientes = new ArrayList<String>();
-		List<Integer> pedidosDosClientesEmQuantidade = new ArrayList<Integer>();
-		List<Double> valoresASerPagoPeloCliente = new ArrayList<Double>();
+		List<Cliente> clientes = new ArrayList<Cliente>();
 
 		while (true) {
 			Console cnsl = System.console();
@@ -105,11 +103,11 @@ public class AppConsoleApplication {
 			int sair = Integer.parseInt(cnsl.readLine("Digite: \n1 para continuar \n0 para sair\n"));
 			if(sair == 0) break;
 
-			String nome = cnsl.readLine("Digite o nome do cliente que quer comprar as caixas:\n");
-			int quantidadeCaixas = Integer.parseInt(cnsl.readLine("Digite a quantidade de caixas que o " + nome + " deseja?\n"));
+			Cliente cliente = new Cliente();
 
-			clientes.add(nome);
-			pedidosDosClientesEmQuantidade.add(quantidadeCaixas);
+			cliente.setNome(cnsl.readLine("Digite o nome do cliente que quer comprar as caixas:\n"));
+			int quantidadeCaixas = Integer.parseInt(cnsl.readLine("Digite a quantidade de caixas que o " + cliente.getNome() + " deseja?\n"));
+			cliente.setQuantidadeDeCaixas(quantidadeCaixas);
 
 			System.out.println("[" + quantidadeCaixas + "]");
 
@@ -171,7 +169,9 @@ public class AppConsoleApplication {
 
 			double lucroAReceber = (valorTotalAlterado * porcentagemLucro / 100);
 
-			valoresASerPagoPeloCliente.add(valorTotalAlterado);
+			cliente.setValorTotal(valorTotalAlterado);
+
+			clientes.add(cliente);
 
 			System.out.println("===========================================");
 			System.out.println("Muito bem seu João parabéns pela venda");
@@ -190,10 +190,11 @@ public class AppConsoleApplication {
 		}
 
 		for(int i=0; i<clientes.size(); i++){
+			Cliente cliente = clientes.get(i);
 			System.out.println("===========================================");
-			System.out.println("Cliente: " + clientes.get(i));
-			System.out.println("Quantidade de caixas: " + pedidosDosClientesEmQuantidade.get(i));
-			System.out.println("Valor total a pagar: " + valoresASerPagoPeloCliente.get(i));
+			System.out.println("Cliente: " + cliente.getNome());
+			System.out.println("Quantidade de caixas: " + cliente.getQuantidadeDeCaixas());
+			System.out.println("Valor total a pagar: " + cliente.getValorTotal());
 			System.out.println("===========================================");
 		}
 
