@@ -6,6 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import com.tornese.java.appConsole.entidades.Cliente;
+import com.tornese.java.appConsole.entidades.Pedido;
+import com.tornese.java.appConsole.servicos.Configuracao;
+import com.tornese.java.appConsole.servicos.PedidoServico;
 
 @SpringBootApplication
 public class AppConsoleApplication {
@@ -20,7 +23,7 @@ public class AppConsoleApplication {
 		// int[] valores = {1,3,4,9,8};
 
 		// for(int valor : valores){
-		// 	System.out.println(valor);
+		// System.out.println(valor);
 		// }
 
 		// int[][] array2 = new int[3][2];
@@ -34,16 +37,15 @@ public class AppConsoleApplication {
 		// array2[2][1] = 2;
 
 		// for(int valor : valores){
-		// 	System.out.println(valor);
+		// System.out.println(valor);
 		// }
-
 
 		// List<String> nomes = new ArrayList<String>();
 		// nomes.add("Danilo");
 		// nomes.add("Lana");
 
 		// for(String nome : nomes){
-		// 	System.out.println(nome);
+		// System.out.println(nome);
 		// }
 
 		// List<List<String>> nomes2 = new ArrayList<List<String>>();
@@ -56,15 +58,15 @@ public class AppConsoleApplication {
 		// dados2.add("Denilson");
 		// dados2.add("6");
 		// nomes2.add(dados2);
-		
+
 		// for(List<String> nome : nomes2){
-		// 	System.out.println(nome.get(0));
-		// 	System.out.println(nome.get(1));
+		// System.out.println(nome.get(0));
+		// System.out.println(nome.get(1));
 		// }
 
 		// List<Integer> itens = Arrays.asList( 1, 2, 3, 5 );
-    // itens.forEach(item->System.out.println(item));
-		
+		// itens.forEach(item->System.out.println(item));
+
 		/*
 		 * João é um comerciante que vende laranjas Ele precisa fazer uma entrega de
 		 * algumas caixas cada laranja ele vende por 0,50 centavos, cada caixa tem 50
@@ -88,12 +90,13 @@ public class AppConsoleApplication {
 		 * 
 		 * Dar um relatório final sobre a operação acima
 		 * 
-		 * armazene o nome e o valor do cliente para que o final da operação você possa mostrar
-		 * o nome e a quantidade de caixas
+		 * armazene o nome e o valor do cliente para que o final da operação você possa
+		 * mostrar o nome e a quantidade de caixas
 		 * 
 		 */
 
-		List<Cliente> clientes = new ArrayList<Cliente>();
+		List<Pedido> pedidos = new ArrayList<Pedido>();
+		Configuracao config = new Configuracao();
 
 		while (true) {
 			Console cnsl = System.console();
@@ -101,100 +104,70 @@ public class AppConsoleApplication {
 			System.out.println("Seja muito bem vindo joão ao seu software");
 			System.out.println("===========================================");
 			int sair = Integer.parseInt(cnsl.readLine("Digite: \n1 para continuar \n0 para sair\n"));
-			if(sair == 0) break;
+			if (sair == 0)
+				break;
 
-			Cliente cliente = new Cliente();
+			Pedido pedido = new Pedido();
+			pedido.setCliente(new Cliente());
 
-			cliente.setNome(cnsl.readLine("Digite o nome do cliente que quer comprar as caixas:\n"));
-			int quantidadeCaixas = Integer.parseInt(cnsl.readLine("Digite a quantidade de caixas que o " + cliente.getNome() + " deseja?\n"));
-			cliente.setQuantidadeDeCaixas(quantidadeCaixas);
+			pedido.getCliente().setNome(cnsl.readLine("Digite o nome do cliente que quer comprar as caixas:\n"));
+			int quantidadeCaixas = Integer
+					.parseInt(cnsl.readLine("Digite a quantidade de caixas que o " + pedido.getCliente().getNome() + " deseja?\n"));
+			pedido.setQuantidadeDeCaixas(quantidadeCaixas);
 
 			System.out.println("[" + quantidadeCaixas + "]");
 
-			double valorLaranja = 0.50;
-			int quantidadeCaixasPromocao = 3;
-			int quantidadeDeLaranjaPorCaixa = 50;
-			int porcentagemLucro = 40;
-			int porcentagemDesconto = 10;
-			int porcentagemAcrescimo = 15;
-			int maximoParcelas = 12;
-			double valorParaDesconto = 100;
-			int totalDeLaranjas = quantidadeCaixas * quantidadeDeLaranjaPorCaixa;
-			double valorTotal = totalDeLaranjas * valorLaranja;
-			double valorTotalAlterado = valorTotal;
-			int parcelas = 0;
+			pedido.setTotalDeLaranjas(quantidadeCaixas, config.getValorLaranja(), config.getQuantidadeDeLaranjaPorCaixa());
 
 			String tipoPagamento = cnsl.readLine("Você deseja pagar a vista ou parcelado ?\n A - À vista\n P - Parcelado\n");
 
 			boolean aVista = tipoPagamento.toUpperCase().equals("A");
 			if (aVista) {
 				System.out.println("Você selecionou o pagamento a vista");
-				if (valorTotal > valorParaDesconto || quantidadeCaixas == quantidadeCaixasPromocao) {
-					valorTotalAlterado -= (valorTotal * porcentagemDesconto / 100);
-				}
+				pedido.alterarValorParaPagamentoAVista(config.getValorParaDesconto(), quantidadeCaixas, config.getQuantidadeCaixasPromocao(), config.getPorcentagemDesconto());
 			} else {
-				parcelas = Integer
-						.parseInt(cnsl.readLine("Você selecionou o pagamento a parcelado, Digite a quantidade de parcelas\n"));
-				if (parcelas > maximoParcelas) {
-					System.out.println("Quantidade de parcelas inválida, iremos assumir em " + maximoParcelas + " vezes");
-					parcelas = maximoParcelas;
+				pedido.setParcelas(Integer
+						.parseInt(cnsl.readLine("Você selecionou o pagamento a parcelado, Digite a quantidade de parcelas\n")));
+				if (pedido.getParcelas() > config.getMaximoParcelas()) {
+					System.out
+							.println("Quantidade de parcelas inválida, iremos assumir em " + config.getMaximoParcelas() + " vezes");
+					pedido.setParcelas(config.getMaximoParcelas());
 				}
 
-				if (parcelas == 1) {
+				if (pedido.getParcelas() == 1) {
 					System.out.println("Você selecionou o pagamento a vista");
-					if (valorTotal > valorParaDesconto || quantidadeCaixas == quantidadeCaixasPromocao) {
-						valorTotalAlterado -= (valorTotal * porcentagemDesconto / 100);
-					}
-				} else if (parcelas > 5)
-					valorTotalAlterado += (valorTotal * porcentagemAcrescimo / 100);
-				else {
-					switch (parcelas) {
-					case 2:
-						porcentagemAcrescimo = 5;
-						break;
-					case 3:
-						porcentagemAcrescimo = 8;
-						break;
-					case 4:
-						porcentagemAcrescimo = 10;
-						break;
-					case 5:
-						porcentagemAcrescimo = 13;
-						break;
-					}
-					valorTotalAlterado += (valorTotal * porcentagemAcrescimo / 100);
+					pedido.alterarValorParaPagamentoAVista(config.getValorParaDesconto(), quantidadeCaixas, config.getQuantidadeCaixasPromocao(), config.getPorcentagemDesconto());
+				} else{
+					pedido.acrescentaJuros(config.getPorcentagemAcrescimo());
 				}
-
 			}
 
-			double lucroAReceber = (valorTotalAlterado * porcentagemLucro / 100);
+			pedido.calculaLucroReceber(config.getPorcentagemLucro());
 
-			cliente.setValorTotal(valorTotalAlterado);
-
-			clientes.add(cliente);
+			pedidos.add(pedido);
 
 			System.out.println("===========================================");
 			System.out.println("Muito bem seu João parabéns pela venda");
-			System.out.println("O seu lucro é de: R$ " + lucroAReceber);
-			System.out.println("O valor total a cobrar do cliente é de: R$ " + valorTotalAlterado);
+			System.out.println("O seu lucro é de: R$ " + pedido.getLucroAReceber());
+			System.out.println("O valor total a cobrar do cliente é de: R$ " + pedido.getValorTotalAlterado());
 			System.out.println(
-					"O cliente escolheu o tipo de pagamento: " + (aVista ? "À vista" : "Parcelado em " + parcelas + " vezes"));
+					"O cliente escolheu o tipo de pagamento: " + (aVista ? "À vista" : "Parcelado em " + pedido.getParcelas() + " vezes"));
 			if (aVista) {
-				System.out.println("Para o pagamento a vista demos o desconto dê: R$ " + (valorTotal - valorTotalAlterado));
+				System.out.println("Para o pagamento a vista demos o desconto dê: R$ " + (pedido.valorTotalComDesconto()));
 			} else {
 				System.out
-						.println("Para o pagamento a parcelado colocamos um acrescimo dê: R$ " + (valorTotalAlterado - valorTotal));
-				System.out.println("O valor da parcela será de: R$ " + (valorTotalAlterado / parcelas));
+						.println("Para o pagamento a parcelado colocamos um acrescimo dê: R$ " + pedido.valorDoJuros());
+				System.out.println("O valor da parcela será de: R$ " + pedido.valorParcela());
 			}
 			System.out.println("===========================================");
 		}
 
-		for(int i=0; i<clientes.size(); i++){
-			Cliente cliente = clientes.get(i);
+		for (int i = 0; i < pedidos.size(); i++) {
+			Pedido pedido = pedidos.get(i);
 			System.out.println("===========================================");
-			System.out.println("Cliente: " + cliente.getNome());
-			System.out.println("Quantidade de caixas: " + cliente.getQuantidadeDeCaixas());
-			System.out.println("Valor total a pagar: " + cliente.getValorTotal());
+			System.out.println("Cliente: " + pedido.getCliente().getNome());
+			System.out.println("Quantidade de caixas: " + pedido.getQuantidadeDeCaixas());
+			System.out.println("Valor total a pagar: " + pedido.getValorTotal());
 			System.out.println("===========================================");
 		}
 
